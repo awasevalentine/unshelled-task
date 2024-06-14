@@ -64,16 +64,18 @@ const ItemsWrapper = ({ item }: IProps) => {
   return (
     <Paper
       elevation={1}
-      className={`relative flex flex-col gap-[12px] hover:cursor-pointer ${
-        handlePathnameCheck("/post-details")
-          ? "hover:scale-[100]"
-          : "hover:scale-[1.05]"
-      } z-[2] border py-[3rem] md:py-[4rem] px-[1rem] md:px-[3rem] rounded-[12px]`}
+      className={`relative flex flex-col gap-[12px] hover:cursor-pointer border py-[3rem] md:py-[4rem] px-[1rem] md:px-[3rem] rounded-[12px] transition-transform duration-200`}
       onClick={() =>
         navigate(`/post-details/${item?.id}`, {
           state: item,
         })
       }
+
+      sx={{
+        '&:hover':{
+          transform: `${handlePathnameCheck("/post-details") ? "scale(1)" : "scale(1.05)"}`
+        }
+      }}
     >
       <div className="relative">
         {isLoading && (
@@ -87,7 +89,7 @@ const ItemsWrapper = ({ item }: IProps) => {
           }`}
         >
           {handlePathnameCheck("/post-details") && (
-            <div className="flex flex-row justify-between z-[999] items-center relative top-[-20px] right-0">
+            <div className="flex flex-row justify-between items-center relative top-[-20px] right-0 z-20">
               <Paper
                 elevation={2}
                 className="px-[.5rem] hover:cursor-pointer hover:scale-110"
@@ -116,12 +118,12 @@ const ItemsWrapper = ({ item }: IProps) => {
             </div>
           )}
           <div className="flex flex-row">
-            <span className="text-[20px] font-bold antialised capitalize">
+            <span className="text-[20px] font-bold antialiased capitalize">
               {shortenText(item?.title)}
             </span>
           </div>
           <div className="flex flex-row gap-[4px]">
-            <span className="antialised">{item?.body}</span>
+            <span className="antialiased">{item?.body}</span>
           </div>
         </div>
       </div>
