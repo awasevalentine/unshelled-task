@@ -1,6 +1,6 @@
 import { Pagination } from "@mui/material";
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams, useRoutes } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface IPagination {
   itemsPerPage?: number;

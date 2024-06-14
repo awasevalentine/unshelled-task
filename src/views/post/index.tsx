@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Pagination from "@mui/material/Pagination";
+import {useState } from "react";
 import { useGetPostsQuery } from "../../lib/features/postSlice";
 import Loader from "../../components/loader/Loader";
 import EmptyResult from "../../components/Grid-layout/emptycard/EmptyCard";
 import ItemsWrapper from "./component/items";
-import { PostResponse } from "../../interface/post.interface";
 import Header from "../../components/header/Header";
 import CustomPagination from "../../components/pagination/Pagination";
 
@@ -12,7 +10,7 @@ const Posts = () => {
   const [start, setStart] = useState(0);
   const perPage = 10;
 
-  const { isFetching, isError, isSuccess, data } = useGetPostsQuery({
+  const { isFetching, isSuccess, data } = useGetPostsQuery({
     start,
     perPage,
   });

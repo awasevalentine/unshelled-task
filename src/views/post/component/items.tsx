@@ -6,7 +6,7 @@ import { useDeletPostMutation } from "../../../lib/features/postSlice";
 import { toast } from "react-toastify";
 import Loader from "../../../components/loader/Loader";
 import { useLocation, useNavigate } from "react-router-dom";
-import { BiArrowBack } from "react-icons/bi"; // Importing back arrow icon
+import { BiArrowBack } from "react-icons/bi";
 
 type IProps = {
   item: PostResponse;
@@ -65,7 +65,10 @@ const ItemsWrapper = ({ item }: IProps) => {
     <Paper
       elevation={1}
       className={`relative flex flex-col gap-[12px] hover:cursor-pointer ${
-        handlePathnameCheck("/post-details") ? "hover:scale-[100]" : "hover:scale-[1.05]"} z-[2] border py-[3rem] md:py-[4rem] px-[1rem] md:px-[3rem] rounded-[12px]`}
+        handlePathnameCheck("/post-details")
+          ? "hover:scale-[100]"
+          : "hover:scale-[1.05]"
+      } z-[2] border py-[3rem] md:py-[4rem] px-[1rem] md:px-[3rem] rounded-[12px]`}
       onClick={() =>
         navigate(`/post-details/${item?.id}`, {
           state: item,
