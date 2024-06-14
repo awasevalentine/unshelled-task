@@ -1,4 +1,4 @@
-import { Pagination } from "@mui/material";
+import { Pagination, useMediaQuery } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -12,6 +12,7 @@ interface IPagination {
 const CustomPagination = ({ itemsPerPage, totalItemsCount, setStart, start }: IPagination) => {
   const perPage = itemsPerPage || 10;
   const totalPages = Math.ceil(totalItemsCount / perPage);
+  const mediaMatch = useMediaQuery("(max-width:767px)")
 
   const [page, setPage] = useState(Math.floor(start / perPage) + 1);
   const location = useLocation()
@@ -52,6 +53,7 @@ const CustomPagination = ({ itemsPerPage, totalItemsCount, setStart, start }: IP
         onChange={handlePageChange}
         showFirstButton
         showLastButton
+        siblingCount={mediaMatch ? 0 : 2}
       />
     </div>
   );
