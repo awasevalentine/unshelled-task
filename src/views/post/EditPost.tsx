@@ -90,13 +90,17 @@ const EditPost = () => {
             />
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-[10px]">
+            <button type="button" onClick={()=> navigate(-1)}
+              className="px-7 py-2 bg-[#000000b8] text-white rounded"
+            >Cancel</button>
             <button
               type="submit"
               className="px-7 py-2 bg-[#5C2FC2] text-white rounded"
             >
               {isLoading ? "Updating..." : "Update"}
             </button>
+            
           </div>
         </form>
       </Paper>
