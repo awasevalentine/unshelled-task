@@ -64,9 +64,8 @@ const ItemsWrapper = ({ item }: IProps) => {
   return (
     <Paper
       elevation={1}
-      className={`relative flex flex-col gap-[12px] hover:cursor-pointer hover:${
-        handlePathnameCheck("/post-details") ? "scale-[100]" : "scale-[1.05]"
-      } z-[2] border py-[3rem] md:py-[4rem] px-[1rem] md:px-[3rem] rounded-[12px]`}
+      className={`relative flex flex-col gap-[12px] hover:cursor-pointer ${
+        handlePathnameCheck("/post-details") ? "hover:scale-[100]" : "hover:scale-[1.05]"} z-[2] border py-[3rem] md:py-[4rem] px-[1rem] md:px-[3rem] rounded-[12px]`}
       onClick={() =>
         navigate(`/post-details/${item?.id}`, {
           state: item,
