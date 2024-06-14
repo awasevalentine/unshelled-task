@@ -25,21 +25,22 @@ const Posts = () => {
       <div className="min-h-[100vh]">
         {isFetching && <Loader />}
         {isSuccess && (
-          <>
+          <div className="min-h-[500px]">
             {data?.data?.length === 0 ? (
               <EmptyResult text="No post created yet!" />
             ) : (
               <div className="flex justify-center w-full">
-                <div className="w-[90%] md:w-[80%] lg:w-[700px] flex flex-col gap-[3rem]">
+                <div className="w-[90%] md:w-[80%] lg:w-[700px] flex flex-col gap-[1.5rem] md:gap-[2rem]">
                   {data?.data?.map((res: any) => (
                     <ItemsWrapper item={res} key={res.id} />
                   ))}
                 </div>
               </div>
             )}
-          </>
+          </div>
         )}
-        {data?.data?.length !== 0 && !isFetching && (
+      </div>
+      {data?.data?.length !== 0 && !isFetching && (
           <div className="flex w-full justify-center py-[2rem]">
             <CustomPagination
               totalItemsCount={data?.totalCount || 0}
@@ -49,7 +50,6 @@ const Posts = () => {
             />
           </div>
         )}
-      </div>
     </div>
   );
 };

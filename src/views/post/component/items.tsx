@@ -5,73 +5,124 @@ import { MdModeEditOutline } from "react-icons/md";
 import { useDeletPostMutation } from "../../../lib/features/postSlice";
 import { toast } from "react-toastify";
 import Loader from "../../../components/loader/Loader";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { BiArrowBack } from "react-icons/bi"; // Importing back arrow icon
 
 type IProps = {
   item: PostResponse;
 };
 
 const ItemsWrapper = ({ item }: IProps) => {
-  const [deletePost, { isLoading, isSuccess, isError, error }] =
-    useDeletPostMutation();
-  const medaiMatch = useMediaQuery("(max-width:767px)");
-  const navigate = useNavigate()
+  const [deletePost, { isLoading }] = useDeletPostMutation();
+  const mediaMatch = useMediaQuery("(max-width:767px)");
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-  const handleDelete = () => {
+  const handleDelete = (event: React.MouseEvent) => {
+    event.stopPropagation();
     deletePost(item?.id)
       .unwrap()
-      .then((res) => {
+      .then(() => {
         toast.success("Post successfully deleted!");
+        navigate("/");
       })
       .catch((error: any) => {
         toast.error(error?.message || "Failed to delete post");
       });
   };
 
-  const handleEdit = ()=>{
-    navigate('/edit-post', 
-        {
-            state: item
-        }
-    )
-  }
+  const handleEdit = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    navigate("/edit-post", {
+      state: item,
+    });
+  };
+
+  const handlePathnameCheck = (path: string) => {
+    return pathname?.toLowerCase()?.includes(path.toLowerCase());
+  };
+
+  const handleBack = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    navigate(-1);
+  };
+
+  const shortenText = (text: string) => {
+    if (!handlePathnameCheck("post-details")) {
+      if (mediaMatch && text?.length > 25) {
+        return ` ${text?.slice(0, 25)} ...`;
+      } else if (!mediaMatch && text.length > 35) {
+        return ` ${text?.slice(0, 35)} ...`;
+      } else {
+        return text;
+      }
+    } else {
+      return text;
+    }
+  };
+
   return (
     <Paper
       elevation={1}
-      className="flex flex-col gap-[12px] border py-[3rem] md:py-[4rem] px-[1rem] md:px-[3rem] rounded-[12px]"
+      className={`relative flex flex-col gap-[12px] hover:cursor-pointer hover:${
+        handlePathnameCheck("/post-details") ? "scale-[100]" : "scale-[1.05]"
+      } z-[2] border py-[3rem] md:py-[4rem] px-[1rem] md:px-[3rem] rounded-[12px]`}
+      onClick={() =>
+        navigate(`/post-details/${item?.id}`, {
+          state: item,
+        })
+      }
     >
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className="flex flex-col gap-[12px]">
-          <div className="flex flex-row gap-[12px] justify-end relative top-[-20px] right-0">
-            <Tooltip title="Delete Post" placement="bottom">
-              <IoTrashOutline
-                onClick={handleDelete}
-                size={18}
-                color="red"
-                className="hover:cursor-pointer hover:scale-110"
-              />
-            </Tooltip>
-            <Tooltip title="Edit Post" placement="bottom" color="black">
-              <MdModeEditOutline
-                size={18}
-                color="#002379"
-                className="hover:cursor-pointer hover:scale-110"
-                onClick={handleEdit}
-              />
-            </Tooltip>
+      <div className="relative">
+        {isLoading && (
+          <div className="absolute inset-0 bg-white bg-opacity-75 flex justify-center items-center z-10">
+            <Loader />
           </div>
+        )}
+        <div
+          className={`flex flex-col gap-[12px] ${
+            isLoading ? "opacity-50" : ""
+          }`}
+        >
+          {handlePathnameCheck("/post-details") && (
+            <div className="flex flex-row justify-between z-[999] items-center relative top-[-20px] right-0">
+              <Paper
+                elevation={2}
+                className="px-[.5rem] hover:cursor-pointer hover:scale-110"
+              >
+                <BiArrowBack onClick={handleBack} size={20} />
+              </Paper>
+
+              <div className="flex flex-row gap-[12px]">
+                <Tooltip title="Delete Post" placement="bottom">
+                  <IoTrashOutline
+                    onClick={handleDelete}
+                    size={18}
+                    color="red"
+                    className="hover:cursor-pointer hover:scale-110"
+                  />
+                </Tooltip>
+                <Tooltip title="Edit Post" placement="bottom">
+                  <MdModeEditOutline
+                    size={18}
+                    color="#002379"
+                    className="hover:cursor-pointer hover:scale-110"
+                    onClick={handleEdit}
+                  />
+                </Tooltip>
+              </div>
+            </div>
+          )}
           <div className="flex flex-row">
             <span className="text-[20px] font-bold antialised capitalize">
-              {item?.title}
+              {shortenText(item?.title)}
             </span>
           </div>
           <div className="flex flex-row gap-[4px]">
             <span className="antialised">{item?.body}</span>
           </div>
         </div>
-      )}
+      </div>
     </Paper>
   );
 };
